@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+<!-- update the heading to be the vulnerability name that was clicked on from index.html -->
+
+{% block heading %}
+{{ vulnerability[0] }}
+{% endblock %}
+
+{% block content %}
+<!-- Use a for loop to display the incidents that match the vulnerability. -->
+<div class="row">
+    {% for incident in incidents %}
+    <div class="col-12 col-md-6 mb-3">
+        <div class="card p-3">
+            <h5>{{ incident.inc_name }}</h5>
+            <p>Year: {{ incident.inc_year }}</p>
+            <a href="{{ incident.inc_url }}" class="btn btn-danger" target="_blank">Link</a>
+        </div>
+    </div>
+    {% endfor %}
+<!-- Add the button for adding a new incident -->
+
+{% endblock %}
