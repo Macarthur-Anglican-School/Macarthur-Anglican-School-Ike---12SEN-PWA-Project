@@ -40,6 +40,22 @@ def incident_page(vul_id):
     print(vul_id) #this is a print statement to help you understand what data is being returned
     return render_template('incidents.html', vulnerability = result2, incidents = result1)
 
+@app.route('/add-incident', methods=['GET', 'POST'])
+def add_incident():
+    if request.method == 'POST':
+        # TASK 1: Get form data
+        inc_name = request.form.get['inc_name']
+        inc_year = request.form['inc_year']
+        inc_url = request.form['inc_url']
+        vul_id = request.form['vul_id']
 
+        # TASK 2: Insert new incident into the database
+        with engine.connect() as connection:
+            query = text(f'INSERT INTO incidents (inc_name, inc_year, inc_url, vul_id) VALUES ({inc_name}, {inc_year}, {inc_url}, {vul_id})')
+            connection.execute(query)
 
+        return redirect(url_for('/'))  # Redirect to home page after adding incident
+
+    # If GET request, render the add incident form
+    return render_template('add_incident.html')
 app.run(debug=True, reloader_type='stat', port=5000)
