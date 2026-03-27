@@ -7,7 +7,7 @@ engine = create_engine('sqlite:///.database/cyberwatch.db') #link to the cyberwa
 
 #route for index.html
 @app.route('/')
-def home():
+def home(): 
     
     with engine.connect() as connection:
         # This way of connecting to the database 
@@ -44,18 +44,28 @@ def incident_page(vul_id):
 def add_incident():
     if request.method == 'POST':
         # TASK 1: Get form data
-        inc_name = request.form.get['inc_name']
-        inc_year = request.form['inc_year']
-        inc_url = request.form['inc_url']
-        vul_id = request.form['vul_id']
-
+        inc_name = request.form.get('inc_name')
+        inc_year = request.form.get('inc_year')
+        inc_url = request.form.get('inc_url')
+        vul_id = request.form.get('vul_id')
+        print('VUL_ID:', vul_id) # Debugging statement to check if vul_id is being received correctly
+        
         # TASK 2: Insert new incident into the database
-        with engine.connect() as connection:
-            query = text(f'INSERT INTO incidents (inc_name, inc_year, inc_url, vul_id) VALUES ({inc_name}, {inc_year}, {inc_url}, {vul_id})')
-            connection.execute(query)
+        # with engine.connect() as connection:
+        print('hi')
+        connection = engine.connect()  # Establish a connection to the database
+        query = text(f'INSERT INTO incidents (inc_name, inc_year, inc_url, vul_id) VALUES (:inc_name, :inc_year, :inc_url, :vul_id);')
+        connection.execute(query, {
+            "inc_name": inc_name,
+            "inc_year": inc_year,
+            "inc_url": inc_url,
+            "vul_id": vul_id
+        })
+        connection.commit()
+        connection.close()
 
-        return redirect(url_for('/'))  # Redirect to home page after adding incident
+        return redirect(url_for('home'))  # Redirect to home page after adding incident
 
     # If GET request, render the add incident form
-    return render_template('add_incident.html')
+    return render_template('add-incident.html')
 app.run(debug=True, reloader_type='stat', port=5000)

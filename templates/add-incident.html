@@ -5,7 +5,7 @@ Add an incident
 {% endblock %}
 
 {% block content %}
-<form action = "/incidents" method="POST">
+<form action = "/add-incident" method="POST">
     <div class="mb-3">
         <label for="inc_name" class="form-label">Incident Name</label>
         <input type="text" class="form-control" id="inc_name" name="inc_name" required>
@@ -19,9 +19,10 @@ Add an incident
         <input type="url" class="form-control" id="inc_url" name="inc_url" required>
     </div>
     <div class="mb-3">
-        <label for="vulnerability_id" class="form-label">Vulnerability ID</label>
-        <input type="number" class="form-control" id="vulnerability_id" name="vulnerability_id" required>
+        <label for="vul_id" class="form-label">Vulnerability ID</label>
+        <input type="number" class="form-control" id="vul_id" name="vul_id" required>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<form class="add-page" action="/incidents" method="POST"></form>
 {% endblock %}

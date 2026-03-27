@@ -8,10 +8,11 @@
 
     </head>
     <body>
-        <h1>Cyberwatch</h1>
-        <img src='/static/images/cyberwatch_logo.png' height='70'>
-        <h2>{% block heading%}Vulnerabilities tracker{% endblock %}</h2>
-        
+        <div class="header">
+            <h1>Cyberwatch</h1>
+            <h2>{% block heading%}Vulnerabilities tracker{% endblock %}</h2>
+            <img src="/static/images/cyberwatch_logo.png" height="70">
+        </div>
         <div class='content'>
             {% block content %}{% endblock %}
         </div>

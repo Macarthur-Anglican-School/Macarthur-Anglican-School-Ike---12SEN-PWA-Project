@@ -12,8 +12,9 @@
         <div class="card p-3">
             <h5>Rank: {{ v.owasp_rank }}</h5>
             <p>{{ v.vul_name }}</p>
-            <a href="/incidents/{{ v.id }}" class="btn btn-danger">View</a>
-            <a href="/add-incident/{{ v.id }}" class="btn btn-warning">Add Incident</a>
+            <a href="/incidents/{{ v.id }}" class="btn btn-primary">View</a>
+            <br>
+            <a href="/add-incident" class="btn btn-info">Add Incident</a>
         </div>
     </div>
     {% endfor %}
