@@ -7,17 +7,42 @@
 {% endblock %}
 
 {% block content %}
-<!-- Use a for loop to display the incidents that match the vulnerability. -->
-<div class="row">
-    {% for incident in incidents %}
-    <div class="col-12 col-md-6 mb-3">
-        <div class="card p-3">
-            <h5>{{ incident.inc_name }}</h5>
-            <p>Year: {{ incident.inc_year }}</p>
-            <a href="{{ incident.inc_url }}" class="btn btn-info" target="_blank">View Incident</a>
+<div class="container py-3">
+    <form method="GET" class="row g-2 align-items-end mb-4">
+        <div class="col-12 col-sm-6 col-md-4">
+            <label for="year" class="form-label">Filter by year</label>
+            <select id="year" name="year" class="form-select">
+                <option value="">All years</option>
+                {% for year in available_years %}
+                <option value="{{ year.inc_year }}" {% if selected_year == year.inc_year|string %}selected{% endif %}>
+                    {{ year.inc_year }}
+                </option>
+                {% endfor %}
+            </select>
         </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+        <div class="col-auto">
+            <a href="/incidents/{{ request.view_args.vul_id }}" class="btn btn-outline-secondary">Clear</a>
+        </div>
+    </form>
+
+    <div class="row">
+        {% for incident in incidents %}
+        <div class="col-12 col-md-6 mb-3">
+            <div class="card p-3">
+                <h5>{{ incident.inc_name }}</h5>
+                <p>Year: {{ incident.inc_year }}</p>
+                <a href="{{ incident.inc_url }}" class="btn btn-info" target="_blank">View Incident</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-secondary mb-0">No incidents found for the selected year.</div>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-<!-- Add the button for adding a new incident -->
+</div>
 
 {% endblock %}

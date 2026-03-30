@@ -19,26 +19,44 @@ def home():
 
 @app.route('/incidents/<vul_id>')
 def incident_page(vul_id):
-    # TASK 1: Connect to the database
-    with engine.connect() as connect1:
-        # This way of connecting to the database 
-        # ensures that the connection is automatically closed as soon as the function finishes
-        query = text(f'SELECT inc_name, inc_year, inc_url FROM incidents WHERE vul_id = :vul_id')
-        result1 = connect1.execute(query, {"vul_id":vul_id}).fetchall() 
+    selected_year = request.args.get('year', '').strip()
 
-    # TASK 2: Fetch the Vulnerability Name for the heading (JOIN or separate query)
-    with engine.connect() as connect2:
-        # This way of connecting to the database 
-        # ensures that the connection is automatically closed as soon as the function finishes
-        query = text(f'SELECT vul_name FROM vulnerabilities WHERE id = :vul_id')
-        result2 = connect2.execute(query, {"vul_id": vul_id}).fetchone()
+    with engine.connect() as connection:
+        incidents_years_query = text(
+            'SELECT DISTINCT inc_year FROM incidents '
+            'WHERE vul_id = :vul_id ORDER BY inc_year DESC'
+        )
+        available_years = connection.execute(
+            incidents_years_query, {"vul_id": vul_id}
+        ).fetchall()
 
-    # TASK 3: Fetch all Incidents linked to this vul_id, return incidents list
-    print(result1)
-    print(result2)
+        incidents_query = (
+            'SELECT inc_name, inc_year, inc_url FROM incidents '
+            'WHERE vul_id = :vul_id'
+        )
+        query_params = {"vul_id": vul_id}
 
-    print(vul_id) #this is a print statement to help you understand what data is being returned
-    return render_template('incidents.html', vulnerability = result2, incidents = result1)
+        if selected_year:
+            incidents_query += ' AND inc_year = :selected_year'
+            query_params["selected_year"] = selected_year
+
+        incidents_query += ' ORDER BY inc_year DESC, inc_name ASC'
+        result1 = connection.execute(text(incidents_query), query_params).fetchall()
+
+        vulnerability_query = text(
+            'SELECT vul_name FROM vulnerabilities WHERE id = :vul_id'
+        )
+        result2 = connection.execute(
+            vulnerability_query, {"vul_id": vul_id}
+        ).fetchone()
+
+    return render_template(
+        'incidents.html',
+        vulnerability=result2,
+        incidents=result1,
+        available_years=available_years,
+        selected_year=selected_year
+    )
 
 @app.route('/add-incident', methods=['GET', 'POST'])
 def add_incident():
