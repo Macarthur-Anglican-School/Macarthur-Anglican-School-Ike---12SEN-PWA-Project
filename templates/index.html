@@ -10,8 +10,16 @@
     {% for v in vulnerabilities %}
     <div class="col-12 col-md-6 mb-3">
         <div class="card p-3">
-            <h5>Rank: {{ v.owasp_rank }}</h5>
-            <p>{{ v.vul_name }}</p>
+            <div class="vulnerability-card-top">
+                <div class="vulnerability-main">
+                    <h5>Rank: {{ v.owasp_rank }}</h5>
+                    <p>{{ v.vul_name }}</p>
+                </div>
+                <div class="incident-indicator">
+                    <span class="incident-label">Incidents</span>
+                    <span class="incident-count">{{ v.incident_count }}</span>
+                </div>
+            </div>
             <a href="/incidents/{{ v.id }}" class="btn btn-primary">View</a>
             <br>
             <a href="/add-incident" class="btn btn-info">Add Incident</a>

@@ -12,7 +12,13 @@ def home():
     with engine.connect() as connection:
         # This way of connecting to the database 
         # ensures that the connection is automatically closed as soon as the function finishes
-        query = text('SELECT * FROM vulnerabilities ORDER BY owasp_rank;')
+        query = text(
+            'SELECT vulnerabilities.*, COUNT(incidents.id) AS incident_count '
+            'FROM vulnerabilities '
+            'LEFT JOIN incidents ON incidents.vul_id = vulnerabilities.id '
+            'GROUP BY vulnerabilities.id '
+            'ORDER BY vulnerabilities.owasp_rank;'
+        )
         result = connection.execute(query).fetchall()
 
     return render_template('index.html', vulnerabilities=result)
