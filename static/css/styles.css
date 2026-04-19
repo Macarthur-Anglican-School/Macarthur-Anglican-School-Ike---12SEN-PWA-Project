@@ -44,6 +44,10 @@ h1, h2{
     border-radius: 14px;
 }
 
+.incident-form {
+    padding: 24px;
+}
+
 .content .row {
     margin-left: 0;
     margin-right: 0;
@@ -166,6 +170,10 @@ h1, h2{
 @media (max-width: 600px) {
     body {
         padding: 0 10px;
+    }
+
+    .incident-form {
+        padding: 16px;
     }
 
     .vulnerability-card-top {
