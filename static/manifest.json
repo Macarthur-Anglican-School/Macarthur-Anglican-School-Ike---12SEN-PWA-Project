@@ -1,0 +1,23 @@
+{
+  "name": "Cyberwatch",
+  "short_name": "Cyberwatch",
+  "description": "A vulnerability tracker for viewing OWASP vulnerabilities and related incidents.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#e6edf2",
+  "theme_color": "#3d6784",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
